@@ -1,0 +1,9 @@
+.project {
+  display: flex;
+  gap: 1em;
+  border: 1px solid green;
+}
+
+.project__tile {
+  text-align: center;
+}
