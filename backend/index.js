@@ -20,8 +20,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // routes
-app.use('/missions', missionRoutes)
-app.use('/api/user', userRoutes)
+app.use('/api/missions', missionRoutes)
+app.use('/api/users', userRoutes)
 
 // app.get('/missions', async (req, res) => {
 //   try {

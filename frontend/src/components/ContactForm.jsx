@@ -19,8 +19,8 @@ export default function ContactForm() {
     })
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  function handleSubmit(event) {
+    event.preventDefault()
     console.log(form)
 
     const updateData = async () => {
@@ -30,11 +30,12 @@ export default function ContactForm() {
         body: JSON.stringify(form),
       }
       const response = await fetch(
-        `http://localhost:5555/missions/`,
+        `http://localhost:5555/api/missions/`,
         reqOptions
       )
       const data = await response.json()
       console.log(data)
+      // Perhaps add a conditional to redirect to created mission if logged in, a submitted message if not
     }
     updateData()
   }

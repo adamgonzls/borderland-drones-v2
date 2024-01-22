@@ -17,7 +17,7 @@ export const useLogin = () => {
     }
 
     const response = await fetch(
-      'http://localhost:5555/api/user/login',
+      'http://localhost:5555/api/users/login',
       reqOptions
     )
     const json = await response.json()

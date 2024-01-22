@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
 export default function EditMission() {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({
     contactFirstName: '',
@@ -16,12 +17,12 @@ export default function EditMission() {
   const { id } = useParams()
 
   useEffect(() => {
-    const missionData = async () => {
+    const fetchMission = async () => {
       const reqOptions = {
         headers: { Authorization: `Bearer ${user.token}` },
       }
       const res = await fetch(
-        `http://localhost:5555/missions/${id}`,
+        `http://localhost:5555/api/missions/${id}`,
         reqOptions
       )
       const json = await res.json()
@@ -30,7 +31,7 @@ export default function EditMission() {
     }
 
     if (user) {
-      missionData().catch((error) => {
+      fetchMission().catch((error) => {
         console.log(error)
         setLoading(false)
       })
@@ -62,11 +63,12 @@ export default function EditMission() {
         body: JSON.stringify(form),
       }
       const response = await fetch(
-        `http://localhost:5555/missions/${id}`,
+        `http://localhost:5555/api/missions/${id}`,
         reqOptions
       )
       const data = await response.json()
       console.log(data)
+      navigate(`/missions/${id}`)
     }
     updateData()
   }

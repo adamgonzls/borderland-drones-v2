@@ -1,5 +1,6 @@
 import express from 'express'
 // import { loginUser, signupUser } from '../controllers/userController.js'
+import { getMissions } from '../controllers/missionController.js'
 import { Mission } from '../models/missionModel.js'
 const router = express.Router()
 import { requireAuth } from '../middleware/requireAuth.js'
@@ -8,15 +9,7 @@ import { requireAuth } from '../middleware/requireAuth.js'
 // router.use(requireAuth)
 
 // all missions
-router.get('/', requireAuth, async (req, res) => {
-  try {
-    const missions = await Mission.find({})
-    return res.status(200).json(missions)
-  } catch (error) {
-    console.log(error.message)
-    res.status(500).send({ message: error.message })
-  }
-})
+router.get('/', requireAuth, getMissions)
 
 // mission by id
 router.get('/:id', requireAuth, async (req, res) => {
@@ -73,6 +66,23 @@ router.put('/:id', requireAuth, async (req, res) => {
       return res.status(404).json({ message: 'Mission not found' })
     }
     return res.status(200).send({ message: 'Mission updated successfully' })
+  } catch (error) {
+    return res.status(500).send({ message: error.message })
+  }
+})
+
+// delete mission
+router.delete('/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const mission = await Mission.findByIdAndDelete(id)
+    if (!mission) {
+      return res.status(404).json({ message: 'Mission not found' })
+    }
+    return res
+      .status(200)
+      .send({ message: `Mission ${mission.id} deleted successfully` })
   } catch (error) {
     return res.status(500).send({ message: error.message })
   }

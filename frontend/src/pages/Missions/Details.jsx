@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
 export default function MissionDetails() {
+  const navigate = useNavigate()
   const [mission, setMission] = useState()
   const [loading, setLoading] = useState(true)
   const [editMode, setEditMode] = useState(false)
@@ -10,12 +11,12 @@ export default function MissionDetails() {
   const { user } = useAuthContext()
 
   useEffect(() => {
-    const missionData = async () => {
+    const fetchMission = async () => {
       const reqOptions = {
         headers: { Authorization: `Bearer ${user.token}` },
       }
       const res = await fetch(
-        `http://localhost:5555/missions/${id}`,
+        `http://localhost:5555/api/missions/${id}`,
         reqOptions
       )
       const json = await res.json()
@@ -26,12 +27,34 @@ export default function MissionDetails() {
     }
 
     if (user) {
-      missionData().catch((error) => {
+      fetchMission().catch((error) => {
         console.log(error)
         setLoading(false)
       })
     }
   }, [user])
+
+  const handleDelete = async () => {
+    try {
+      const reqOptions = {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+      // await axios.delete(`http://localhost:5555/campgrounds/${id}`)
+      const response = await fetch(
+        `http://localhost:5555/api/missions/${id}`,
+        reqOptions
+      )
+      const data = await response.json()
+      console.log(data)
+      navigate('/missions')
+    } catch (error) {
+      alert('An error occurred, please check console')
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -49,7 +72,9 @@ export default function MissionDetails() {
 
             <div>
               <h3 className='font-reg'>Mission Name:</h3>
-              {mission.friendlyMissionName}
+              {mission.friendlyMissionName
+                ? mission.friendlyMissionName
+                : mission._id}
               <h3 className='font-reg'>Contact First Name:</h3>
               {mission.contactFirstName}
               <h3 className='font-reg'>Contact Last Name:</h3>
@@ -62,6 +87,9 @@ export default function MissionDetails() {
               <p className='mt-0'>{mission.requestDetails}</p>
             </div>
             <Link to={`/missions/${mission._id}/edit`}>Edit Mission</Link>
+            <button className='button button--primary' onClick={handleDelete}>
+              Delete
+            </button>
           </section>
         </main>
       )}

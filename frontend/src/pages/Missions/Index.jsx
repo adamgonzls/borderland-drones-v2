@@ -8,18 +8,18 @@ export default function MissionsIndex() {
   const { user } = useAuthContext()
 
   useEffect(() => {
-    const missionData = async () => {
+    const fetchMissions = async () => {
       const reqOptions = {
         headers: { Authorization: `Bearer ${user.token}` },
       }
-      const res = await fetch('http://localhost:5555/missions', reqOptions)
+      const res = await fetch('http://localhost:5555/api/missions', reqOptions)
       const json = await res.json()
       if (res.ok) {
         setAllMissions(json)
       }
     }
     if (user) {
-      missionData()
+      fetchMissions()
     }
   }, [user])
 
@@ -32,7 +32,11 @@ export default function MissionsIndex() {
       <section className='base-padding'>
         <Link to='/missions/new'>Add New Mission</Link>
         <h1>All Missions</h1>
-        {missionElements}
+        {missionElements.length ? (
+          missionElements
+        ) : (
+          <p>There are no missions</p>
+        )}
       </section>
     </main>
   )

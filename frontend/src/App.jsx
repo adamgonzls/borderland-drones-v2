@@ -8,22 +8,40 @@ import MissionsIndex from './pages/Missions/Index'
 import NewMission from './pages/Missions/New'
 import MissionDetails from './pages/Missions/Details'
 import EditMission from './pages/Missions/Edit'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuthContext } from './hooks/useAuthContext'
 import './App.css'
 
 function App() {
+  const { user } = useAuthContext()
+
   return (
     <div className='page-container'>
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<SignUp />} />
+        <Route
+          path='/login'
+          element={!user ? <Login /> : <Navigate to='/missions' />}
+        />
+        <Route
+          path='/signup'
+          element={!user ? <SignUp /> : <Navigate to='/missions' />}
+        />
         <Route path='/contact' element={<Contact />} />
-        <Route path='/missions' element={<MissionsIndex />} />
+        <Route
+          path='/missions'
+          element={user ? <MissionsIndex /> : <Navigate to='/login' />}
+        />
         <Route path='/missions/new' element={<NewMission />} />
-        <Route path='/missions/:id' element={<MissionDetails />} />
-        <Route path='/missions/:id/edit' element={<EditMission />} />
+        <Route
+          path='/missions/:id'
+          element={!user ? <Login /> : <MissionDetails />}
+        />
+        <Route
+          path='/missions/:id/edit'
+          element={!user ? <Login /> : <EditMission />}
+        />
       </Routes>
     </div>
   )

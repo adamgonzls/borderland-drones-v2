@@ -14,7 +14,8 @@ export default function Mission({ missionData }) {
   } = missionData
   return (
     <div>
-      <h2>Mission {friendlyMissionName ? friendlyMissionName : _id}</h2>
+      <h3 className='font-reg'>Mission:</h3>
+      <span>{friendlyMissionName ? friendlyMissionName : _id}</span>
       <h3 className='font-reg'>Contact First Name:</h3>
       <span>{contactFirstName}</span>
       <h3 className='font-reg'>Contact Last Name:</h3>

@@ -5,9 +5,9 @@ const missionSchema = mongoose.Schema(
     friendlyMissionName: {
       type: String,
     },
-    missionName: {
-      type: String,
-    },
+    // missionName: {
+    //   type: String,
+    // },
     contactFirstName: {
       type: String,
       required: true,
@@ -25,6 +25,9 @@ const missionSchema = mongoose.Schema(
     requestDetails: {
       type: String,
       required: true,
+    },
+    userID: {
+      type: String,
     },
   },
   {

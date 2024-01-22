@@ -1,6 +1,6 @@
-# YelpCamp
+# Borderland Drones
 
-It's Yelp for campsites
+Frontend and backend business software for Borderland Drones
 
 <!-- Check it out: [Adam's Portfolio](https://adamgonzales.netlify.app/) -->
 
